@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+    #container {
+        margin: 0px auto;
+        width: 500px;
+        height: 375px;
+        border: 10px #333 solid;
+    }
+    #videoElement {
+        width: 500px;
+        height: 375px;
+        background-color: #666;
+    }
+    </style>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+
+  <div id="container">
+      <video autoplay="true" id="videoElement">
+
+      </video>
+  </div>
+
+  <script>
+  var video = document.querySelector("#videoElement");
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        video.srcObject = stream;
+      })
+      .catch(function (err0r) {
+        console.log("Something went wrong!");
+      });
+  }
+  function stop(e) {
+    var stream = video.srcObject;
+    var tracks = stream.getTracks();
+
+    for (var i = 0; i < tracks.length; i++) {
+      var track = tracks[i];
+      track.stop();
+    }
+
+    video.srcObject = null;
+  }
+  </script>
+
+  <div class="w-25 p-3">
+    <h3>Ming's Toy MNIST demo</h3>
+        <h4>Hi Kelly, this is quick demo use HTML and JavaScript hosted using Apache2 in my local machine.</h4>
+        <h4>The Javascript takes an pre-trained ONNX (This is a CNN model converted from Pytorch) model and make prediction from drawing image. </h4>
+        <h4>Next step, I will explore capturing images from webcam and make prediction on that.</h4>
+        <h4>You can keep this address and I will update my results here.</h4>
+  </div>
+
+    <div class="card elevation">
+      <canvas
+        class="canvas elevation"
+        id="canvas"
+        width="280"
+        height="280"
+      ></canvas>
+
+      <div class="button" id="clear-button">CLEAR</div>
+
+      <div class="predictions">
+        <div class="prediction-col" id="prediction-0">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">0</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-1">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">1</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-2">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">2</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-3">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">3</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-4">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">4</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-5">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">5</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-6">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">6</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-7">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">7</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-8">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">8</div>
+        </div>
+
+        <div class="prediction-col" id="prediction-9">
+          <div class="prediction-bar-container">
+            <div class="prediction-bar"></div>
+          </div>
+          <div class="prediction-number">9</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
