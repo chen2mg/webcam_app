@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>OpenCV.js Face Detection</title>
   <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Load TensorFlow.js. This is required to use coco-ssd model. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"> </script>
+    <!-- Load the coco-ssd model. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"> </script>
+
 </head>
 <body>
 
@@ -16,15 +22,18 @@
 <div id="container">
   <canvas class="center-block" id="canvasOutput" width=320 height=240></canvas>
 </div>
-<div class="invisible">
+
+<div>
   <input type="checkbox" id="face" name="classifier" value="face" checked>
   <label for="face">face</label>
   <input type="checkbox" id="eye" name="cascade" value="eye">
   <label for="eye">eye</label>
 </div>
+
 <div class="invisible">
   <video id="video" class="hidden">Your browser does not support the video tag.</video>
 </div>
+
 
   <div>
       <ul>

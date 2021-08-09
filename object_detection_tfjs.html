@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Ming's Toy object detection demo using tfjs</title>
+    <meta charset="utf-8">
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="css/style_tfjs.css">
+  </head>
+  <body>
+    <h3 class="text-center">Ming's Toy object detection demo using tfjs</h3>
+    <div id="info" class="text-center">
+      Loading tensorflow.js model...
+    </div>
+    <section id="demos" class="invisible">
+
+      <div id="liveView" class="camView">
+        <button id="webcamButton">Enable Webcam</button>
+        <video id="webcam" autoplay width="640" height="480"></video>
+      </div>
+    </section>
+      <br>
+      <div>
+      <ul>
+        <li>
+        <h4>Hi,</h4>
+      </li>
+
+      <li>
+        <h4>This App is developed based on HTML, JavaScript, and Tensorflow.js!</h4>
+      </li>
+
+      <li>
+        <h4>The inference model is a pretrained <a href="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd">Coco-ssd</a> from Google Tensorflow.js</h4>
+      </li>
+
+	  <li>
+        <h4>The inference happens in client’s browser using JavaScript.</h4>
+      </li>
+
+    </ul>
+
+  </div>
+
+    <!-- Import TensorFlow.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js" type="text/javascript"></script>
+    <!-- Load the coco-ssd model to use to recognize things in images -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+
+    <!-- Import the page's JavaScript to do some stuff -->
+    <script src="js/script_tfjs.js" defer></script>
+  </body>
+</html>

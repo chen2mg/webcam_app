@@ -1,9 +1,9 @@
+// import * as cocossd from "@tensorflow-models/coco-ssd";
+//import {drawRect} from "./utilities.js";
+
 let videoWidth, videoHeight;
-
 let qvga = {width: {exact: 320}, height: {exact: 240}};
-
 let vga = {width: {exact: 640}, height: {exact: 480}};
-
 let resolution = window.innerWidth < 640 ? qvga : vga;
 
 // whether streaming video from the camera.
@@ -45,6 +45,28 @@ function startCamera() {
   }, false);
 }
 
+function drawRect(detections, ctx){
+  // Loop through each prediction
+  detections.forEach(prediction => {
+
+    // Extract boxes and classes
+    const [x, y, width, height] = prediction['bbox'];
+    const text = prediction['class'];
+
+    // Set styling
+    const color = Math.floor(Math.random()*16777215).toString(16);
+    ctx.strokeStyle = '#' + color
+    ctx.font = '18px Arial';
+
+    // Draw rectangles and text
+    ctx.beginPath();
+    ctx.fillStyle = '#' + color
+    ctx.fillText(text, x, y);
+    ctx.rect(x, y, width, height);
+    ctx.stroke();
+  });
+}
+
 let faceClassifier = null;
 let eyeClassifier = null;
 
@@ -82,6 +104,70 @@ function startVideoProcessing() {
   eyeClassifier.load('haarcascade_eye.xml');
   
   requestAnimationFrame(processVideo);
+  //requestAnimationFrame(processVideoTFJS);
+  //requestAnimationFrame(processVideoTFJS_try);
+}
+
+const model = cocoSsd.load();
+
+function processVideoTFJS_try() {
+  stats.begin();
+  canvasInputCtx.drawImage(video, 0, 0, videoWidth, videoHeight);
+  let imageData = canvasInputCtx.getImageData(0, 0, videoWidth, videoHeight);
+
+//  // Load the model.
+//  cocoSsd.load().then(model => {
+//    // detect objects in the image.
+//    model.detect(img).then(predictions => {
+//      console.log('Predictions: ', predictions);
+//    });
+//  });
+  //srcMat.data.set(imageData.data);
+
+  predictions = model.detect(video)
+
+  canvasOutputCtx.drawImage(canvasInput, 0, 0, videoWidth, videoHeight);
+
+//  if (detectFace.checked) {
+//    drawRect(predictions, canvasOutputCtx);
+//  }
+
+  stats.end();
+  requestAnimationFrame(processVideoTFJS_try);
+}
+
+
+function processVideoTFJS() {
+  stats.begin();
+  canvasInputCtx.drawImage(video, 0, 0, videoWidth, videoHeight);
+  let imageData = canvasInputCtx.getImageData(0, 0, videoWidth, videoHeight);
+  srcMat.data.set(imageData.data);
+  cv.cvtColor(srcMat, grayMat, cv.COLOR_RGBA2GRAY);
+  let faces = [];
+  let size;
+
+  if (detectFace.checked) {
+    let faceVect = new cv.RectVector();
+    let faceMat = new cv.Mat();
+
+    cv.pyrDown(grayMat, faceMat);
+    if (videoWidth > 320)
+      cv.pyrDown(faceMat, faceMat);
+    size = faceMat.size();
+
+    faceClassifier.detectMultiScale(faceMat, faceVect);
+    for (let i = 0; i < faceVect.size(); i++) {
+      let face = faceVect.get(i);
+      faces.push(new cv.Rect(face.x, face.y, face.width, face.height));
+    }
+    faceMat.delete();
+    faceVect.delete();
+  }
+
+  canvasOutputCtx.drawImage(canvasInput, 0, 0, videoWidth, videoHeight);
+  drawResults(canvasOutputCtx, faces, 'green', size);
+  stats.end();
+  requestAnimationFrame(processVideoTFJS);
 }
 
 function processVideo() {
